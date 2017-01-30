@@ -8,6 +8,9 @@ class Land(object):
     def __init__(self, country, capital):
         self.country=country
         self.capital=capital
+    def __str__(self):
+        return self.country + "," + self.capital
+
     def _dict_(self):
         return str(country) + str(capital)
 
@@ -40,6 +43,8 @@ for ding in laenderliste:
     csv_file.write(str(ding) + "\n")
 
 print laenderdic
+
+print laenderliste
 
 
 
