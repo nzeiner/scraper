@@ -1,54 +1,54 @@
 from urllib2 import urlopen
 
 from BeautifulSoup import BeautifulSoup
-
-class Person(object):
-    def __init__(self, path):
-
-        soup = BeautifulSoup(urlopen(url + path).read())
-        self.name = soup.findAll('h1')[1].string
-        self.email = soup.findAll(attrs={"class": "email"})[0].string
-
-    def __str__(self): #definiert was passiert wenn aus daten ein string gemacht wird - bei print passiert das von vornherein
-        return self.name + "," + self.email
+import requests
 
 
+class Land(object):
+    def __init__(self, country, capital):
+        self.country=country
+        self.capital=capital
+    def _dict_(self):
+        return str(country) + str(capital)
 
-
-
-
-
-laenderliste = []
-
-laenderdic = {}
 
 url = "https://www.countries-ofthe-world.com/capitals-of-the-world.html"
+r = requests.get(url)
+data = r.text
+soup = BeautifulSoup(data)
 
-html = urlopen(url).read()
+csv_file = open("laender_list.csv", "w")
 
-soup = BeautifulSoup(html)
+laenderliste = []
+laenderdic = {}
 
-csv_file = open("email_list.csv", "w")
+table = soup.findAll("td", attrs={"class":None})
+for count, i in enumerate(table):
+    if count % 2 == 0:
+        country = i.getText()
+    else:
+        capital = i.getText()
 
+        country = country.encode("utf-8")
+        capital = capital.encode("utf-8")
 
-
-for link in soup.findAll("a"):
-    if (len(link["href"]) > 3):
-        personenliste.append(Person(link["href"]))
-
-
-
-
-
-
-for person in  personenliste:
-    csv_file.write(str(person) + "\n")
-
-
-#for person in personenliste:
-    #csv_file.write(person)
+        laenderdic[Land(country,capital)] = Land(country, capital)
+        laenderliste.append(Land(country,capital))
 
 
+for ding in laenderliste:
+    csv_file.write(str(ding) + "\n")
+
+print laenderdic
 
 
-csv_file.close()
+
+
+
+
+
+
+
+
+
+

@@ -9,11 +9,12 @@ class Person(object):
         self.name = soup.findAll('h1')[1].string
         self.email = soup.findAll(attrs={"class": "email"})[0].string
 
-    def __str__(self):
+    def __str__(self): #definiert was passiert wenn aus daten ein string gemacht wird - bei print passiert das von vornherein
         return self.name + "," + self.email
 
 
 personenliste = []
+
 
 url = "http://scrapebook22.appspot.com"
 
@@ -29,14 +30,14 @@ for link in soup.findAll("a"):
     if (len(link["href"]) > 3):
         personenliste.append(Person(link["href"]))
 
+
+
 for person in  personenliste:
-    csv_file.write(person + "\n")
+    csv_file.write(str(person) + "\n")
 
-
-#for person in personenliste:
-    #csv_file.write(person)
 
 
 
 
 csv_file.close()
+
